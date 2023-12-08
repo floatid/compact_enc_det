@@ -5,17 +5,20 @@
 # Old enough to support Ubuntu Precise.
 cmake_minimum_required(VERSION 2.8.7)
 
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 if (WIN32)
-  if (NOT EXISTS "compact_enc_det/compact_enc_det.h")
+  if (NOT EXISTS "../compact_enc_det/compact_enc_det/compact_enc_det.h")
     message(FATAL_ERROR "\nCould not find source code.  Make sure you are running this script from the root of the distribution tree.")
   endif()
 
   if (NOT EXISTS "gtest")
     message(STATUS "Google Test not present.  Fetching from the web...")
     file(DOWNLOAD "https://github.com/google/googletest/archive/master.zip" ${CMAKE_SOURCE_DIR}/master.zip)
-    execute_process(COMMAND ${CMAKE_COMMAND} -E tar x master.zip)
+    execute_process(COMMAND ${CMAKE_COMMAND} -E tar x ${CMAKE_SOURCE_DIR}/master.zip)
     file(REMOVE master.zip)
-    file(RENAME googletest-master gtest)
+    file(RENAME ${CMAKE_CURRENT_BINARY_DIR}/googletest-main ${CMAKE_CURRENT_BINARY_DIR}/gtest)
   endif()
 
   # Configure gtest.
